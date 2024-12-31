@@ -1,7 +1,7 @@
 import pandas as pd
 import random
 
-classes = 30
+classes = 35
 columns = 5
 benches = 7
 total_benches = columns * benches
@@ -33,11 +33,11 @@ for reg_no in df["Registration No's"]:
     else:
         print("Error")
 
-print(F"First years: {first_year_students}")
-print()
-print(f"Second years: {second_year_students}")
-print()
-print(f"Third years: {third_year_students}")
+# print(F"First years: {first_year_students}")
+# print()
+# print(f"Second years: {second_year_students}")
+# print()
+# print(f"Third years: {third_year_students}")
 
 def student_classification(first_year_students, second_year_students, third_year_students, student_year_lists):
     for student_roll_no1 in first_year_students:
