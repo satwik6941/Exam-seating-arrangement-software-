@@ -35,12 +35,6 @@ for reg_no in df["Registration No's"]:
     else:
         print("Error")
 
-# print(F"First years: {first_year_students}")
-# print()
-# print(f"Second years: {second_year_students}")
-# print()
-# print(f"Third years: {third_year_students}")
-
 def student_classification(first_year_students, second_year_students, third_year_students, student_year_lists):
     for student_roll_no1 in first_year_students:
         if student_roll_no1[8:11] == 'CSE':
@@ -96,9 +90,7 @@ def student_classification(first_year_students, second_year_students, third_year
         else:
             print("Error")
 
-    updated_student_year_lists = student_year_lists
-
-    return updated_student_year_lists
+    return student_year_lists
 
 students_data = student_classification(first_year_students, second_year_students, third_year_students, student_year_lists)
 
@@ -144,9 +136,6 @@ def seating_arrangement(classes, columns, benches, students_data):
     bench_count = 0 
 
     for classroom in range(classes):
-        print(f"\nClassroom {classroom + 1} Seating Arrangement:")
-        print("=" * 100)
-
         current_column = 0
         current_bench = 0
 
@@ -156,7 +145,6 @@ def seating_arrangement(classes, columns, benches, students_data):
             students_list2 = active_courses[students_list2_name]
 
             while current_column < columns:
-                print(f"Column {current_column + 1}: ", end="")
                 while current_bench < benches:
                     if bench_count % 2 == 0 and indices[students_list1_name] < len(students_list1):
                         arrangement[classroom][current_column][current_bench] = students_list1[indices[students_list1_name]]
@@ -168,12 +156,6 @@ def seating_arrangement(classes, columns, benches, students_data):
                     current_bench += 1
                     bench_count += 1
 
-                seat_strings = [
-                    str(seat) if seat != '' else 'EMPTY'
-                    for seat in arrangement[classroom][current_column]
-                ]
-                print(" | ".join(seat_strings))
-
                 current_column += 1
                 current_bench = 0
 
@@ -184,13 +166,11 @@ def seating_arrangement(classes, columns, benches, students_data):
                 current_pair += 1
 
             if current_column == columns:
-                current_column = 0
                 break
 
         if current_pair >= len(pairs) and last_class:
             students_list = active_courses[last_class]
             while current_column < columns:
-                print(f"Column {current_column + 1}: ", end="")
                 while current_bench < benches:
                     if indices[last_class] < len(students_list):
                         arrangement[classroom][current_column][current_bench] = students_list[indices[last_class]]
@@ -201,29 +181,13 @@ def seating_arrangement(classes, columns, benches, students_data):
                     current_bench += 2
                     bench_count += 2  
 
-                seat_strings = [
-                    str(seat) if seat != '' else 'EMPTY'
-                    for seat in arrangement[classroom][current_column]
-                ]
-                print(" | ".join(seat_strings))
-
                 current_column += 1
                 current_bench = 0  
 
                 if indices[last_class] == len(students_list):
                     break
 
-        if current_pair >= len(pairs) and not last_class:
-            while current_column < columns:
-                print(f"Column {current_column + 1}: ", end="")
-                print("EMPTY | " * (benches - 1) + "EMPTY")
-                current_column += 1
-
-        print("-" * 100)
-
     return arrangement
-
-seating_arrangement(classes, columns, benches, students_data)
 
 def seating_gui(arrangement):
     root = tk.Tk()
