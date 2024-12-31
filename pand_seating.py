@@ -225,43 +225,73 @@ def seating_arrangement(classes, columns, benches, students_data):
 
 seating_arrangement(classes, columns, benches, students_data)
 
-# Function to create the seating GUI
 def seating_gui(arrangement):
     root = tk.Tk()
     root.title("Seating Arrangement")
 
+    # Maximize the window without full-screen mode
+    root.state("zoomed")
+
+    # Main container
     canvas = tk.Canvas(root)
     scrollbar = ttk.Scrollbar(root, orient="vertical", command=canvas.yview)
     scrollable_frame = ttk.Frame(canvas)
 
     scrollable_frame.bind(
         "<Configure>",
-        lambda e: canvas.configure(
-            scrollregion=canvas.bbox("all")
-        )
+        lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
     )
 
     canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
     canvas.configure(yscrollcommand=scrollbar.set)
 
-    for i in range(0, classes, 2):  # Iterate in pairs of classrooms
-        frame_row = ttk.Frame(scrollable_frame)
-        frame_row.grid(row=i // 2, column=0, padx=10, pady=10, sticky="nsew")
+    # Define fonts for labels
+    classroom_font = ("Arial", 30, "bold")  # Larger font size for classroom titles
+    header_font = ("Arial", 20, "bold")    # Font size for column headers
+    seat_font = ("Arial", 18)             # Font size for seat labels
 
-        for j in range(2):  # Create two classrooms in a row
-            classroom_index = i + j
-            if classroom_index < classes:
-                frame = ttk.LabelFrame(frame_row, text=f"Classroom {classroom_index + 1}")
-                frame.grid(row=0, column=j, padx=10, pady=10, sticky="nsew")
+    # Iterate classrooms, each on a separate row
+    classes = len(arrangement)
+    columns = len(arrangement[0])
+    benches = len(arrangement[0][0])
 
-                for col in range(columns):
-                    col_label = ttk.Label(frame, text=f"Column {col + 1}")
-                    col_label.grid(row=0, column=col, padx=5, pady=5)
+    for i in range(classes):
+        # Create a frame for the classroom
+        frame = tk.Frame(scrollable_frame, pady=10)
+        frame.grid(row=i, column=0, padx=20, pady=20, sticky="nsew")
+        
+        # Center and increase the size of the classroom title
+        title_label = tk.Label(frame, text=f"Classroom {i + 1}", font=classroom_font, anchor="center")
+        title_label.pack(pady=10)
 
-                    for row in range(benches):
-                        seat = arrangement[classroom_index][col][row]
-                        seat_label = ttk.Label(frame, text=seat if seat else "EMPTY", borderwidth=1, relief="solid")
-                        seat_label.grid(row=row + 1, column=col, padx=5, pady=5)
+        # Create a grid for seating arrangement
+        seating_frame = tk.Frame(frame)
+        seating_frame.pack(fill="both", expand=True)
+
+        for col in range(columns):
+            # Column header
+            col_label = tk.Label(seating_frame, text=f"Column {col + 1}", font=header_font)
+            col_label.grid(row=0, column=col, padx=10, pady=10, sticky="nsew")
+
+            for row in range(benches):
+                seat = arrangement[i][col][row]
+                seat_label = tk.Label(
+                    seating_frame,
+                    text=seat if seat else "EMPTY",
+                    font=seat_font,
+                    borderwidth=1,
+                    relief="solid"
+                )
+                seat_label.grid(row=row + 1, column=col, padx=10, pady=10, sticky="nsew")
+
+        # Configure grid weights for proportional resizing
+        for col in range(columns):
+            seating_frame.columnconfigure(col, weight=1)
+        for row in range(benches + 1):  # Include column header row
+            seating_frame.rowconfigure(row, weight=1)
+
+    # Configure main scrollable frame to expand
+    scrollable_frame.columnconfigure(0, weight=1)
 
     canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
