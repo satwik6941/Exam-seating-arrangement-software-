@@ -1,5 +1,7 @@
 import pandas as pd
 import random
+import tkinter as tk 
+from tkinter import ttk
 
 classes = 35
 columns = 5
@@ -222,3 +224,52 @@ def seating_arrangement(classes, columns, benches, students_data):
     return arrangement
 
 seating_arrangement(classes, columns, benches, students_data)
+
+# Function to create the seating GUI
+def seating_gui(arrangement):
+    root = tk.Tk()
+    root.title("Seating Arrangement")
+
+    canvas = tk.Canvas(root)
+    scrollbar = ttk.Scrollbar(root, orient="vertical", command=canvas.yview)
+    scrollable_frame = ttk.Frame(canvas)
+
+    scrollable_frame.bind(
+        "<Configure>",
+        lambda e: canvas.configure(
+            scrollregion=canvas.bbox("all")
+        )
+    )
+
+    canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+    canvas.configure(yscrollcommand=scrollbar.set)
+
+    for i in range(0, classes, 2):  # Iterate in pairs of classrooms
+        frame_row = ttk.Frame(scrollable_frame)
+        frame_row.grid(row=i // 2, column=0, padx=10, pady=10, sticky="nsew")
+
+        for j in range(2):  # Create two classrooms in a row
+            classroom_index = i + j
+            if classroom_index < classes:
+                frame = ttk.LabelFrame(frame_row, text=f"Classroom {classroom_index + 1}")
+                frame.grid(row=0, column=j, padx=10, pady=10, sticky="nsew")
+
+                for col in range(columns):
+                    col_label = ttk.Label(frame, text=f"Column {col + 1}")
+                    col_label.grid(row=0, column=col, padx=5, pady=5)
+
+                    for row in range(benches):
+                        seat = arrangement[classroom_index][col][row]
+                        seat_label = ttk.Label(frame, text=seat if seat else "EMPTY", borderwidth=1, relief="solid")
+                        seat_label.grid(row=row + 1, column=col, padx=5, pady=5)
+
+    canvas.pack(side="left", fill="both", expand=True)
+    scrollbar.pack(side="right", fill="y")
+
+    root.mainloop()
+
+# Capture the seating arrangement returned by the function
+arrangement = seating_arrangement(classes, columns, benches, students_data)
+
+# Pass the arrangement to the GUI function
+seating_gui(arrangement)
