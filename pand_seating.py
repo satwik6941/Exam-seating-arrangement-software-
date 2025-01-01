@@ -2,6 +2,8 @@ import pandas as pd
 import random
 import tkinter as tk 
 from tkinter import ttk
+from fpdf import FPDF
+import os
 
 classes = 35
 columns = 5
@@ -189,14 +191,49 @@ def seating_arrangement(classes, columns, benches, students_data):
 
     return arrangement
 
+def save_as_pdf(arrangement, classes, columns, benches):
+    pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.set_font("Arial", size=10)
+
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    pdf.cell(200, 10, txt="Seating Arrangement", ln=True, align='C')
+    pdf.set_font("Arial", size=10)
+
+    for classroom_index in range(classes):
+        if classroom_index % 2 == 0 and classroom_index != 0:
+            pdf.add_page()
+
+        pdf.set_font("Arial", size=12)
+        pdf.cell(200, 10, txt=f"Classroom {classroom_index + 1}", ln=True, align='C')
+        pdf.set_font("Arial", size=10)
+
+        table_width = columns * 40
+        margin = (210 - table_width) / 2  # A4 width is 210mm
+
+        pdf.set_x(margin)
+        for col in range(columns):
+            pdf.cell(40, 12, txt=f"Column {col + 1}", border=1, align='C')
+        pdf.ln()
+
+        for row in range(benches):
+            pdf.set_x(margin)
+            for col in range(columns):
+                seat = arrangement[classroom_index][col][row]
+                pdf.cell(40, 12, txt=seat if seat else "EMPTY", border=1, align='C')
+            pdf.ln()
+        pdf.ln()
+
+    downloads_path = os.path.join(os.path.expanduser("~"), "Downloads", "seating_arrangement.pdf")
+    pdf.output(downloads_path)
+
 def seating_gui(arrangement):
     root = tk.Tk()
     root.title("Seating Arrangement")
 
-    # Maximize the window without full-screen mode
     root.state("zoomed")
 
-    # Main container
     canvas = tk.Canvas(root)
     scrollbar = ttk.Scrollbar(root, orient="vertical", command=canvas.yview)
     scrollable_frame = ttk.Frame(canvas)
@@ -209,31 +246,28 @@ def seating_gui(arrangement):
     canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
     canvas.configure(yscrollcommand=scrollbar.set)
 
-    # Define fonts for labels
-    classroom_font = ("Arial", 30, "bold")  # Larger font size for classroom titles
-    header_font = ("Arial", 20, "bold")    # Font size for column headers
-    seat_font = ("Arial", 18)             # Font size for seat labels
+    save_button = ttk.Button(root, text="Save as PDF", command=lambda: save_as_pdf(arrangement, classes, columns, benches))
+    save_button.pack(side="top", anchor="ne", padx=10, pady=10)
 
-    # Iterate classrooms, each on a separate row
+    classroom_font = ("Arial", 30, "bold") 
+    header_font = ("Arial", 20, "bold")   
+    seat_font = ("Arial", 18)         
+
     classes = len(arrangement)
     columns = len(arrangement[0])
     benches = len(arrangement[0][0])
 
     for i in range(classes):
-        # Create a frame for the classroom
         frame = tk.Frame(scrollable_frame, pady=10)
         frame.grid(row=i, column=0, padx=20, pady=20, sticky="nsew")
         
-        # Center and increase the size of the classroom title
         title_label = tk.Label(frame, text=f"Classroom {i + 1}", font=classroom_font, anchor="center")
         title_label.pack(pady=10)
 
-        # Create a grid for seating arrangement
         seating_frame = tk.Frame(frame)
         seating_frame.pack(fill="both", expand=True)
 
         for col in range(columns):
-            # Column header
             col_label = tk.Label(seating_frame, text=f"Column {col + 1}", font=header_font)
             col_label.grid(row=0, column=col, padx=10, pady=10, sticky="nsew")
 
@@ -248,13 +282,11 @@ def seating_gui(arrangement):
                 )
                 seat_label.grid(row=row + 1, column=col, padx=10, pady=10, sticky="nsew")
 
-        # Configure grid weights for proportional resizing
         for col in range(columns):
             seating_frame.columnconfigure(col, weight=1)
-        for row in range(benches + 1):  # Include column header row
+        for row in range(benches + 1): 
             seating_frame.rowconfigure(row, weight=1)
 
-    # Configure main scrollable frame to expand
     scrollable_frame.columnconfigure(0, weight=1)
 
     canvas.pack(side="left", fill="both", expand=True)
@@ -262,8 +294,6 @@ def seating_gui(arrangement):
 
     root.mainloop()
 
-# Capture the seating arrangement returned by the function
 arrangement = seating_arrangement(classes, columns, benches, students_data)
 
-# Pass the arrangement to the GUI function
 seating_gui(arrangement)
