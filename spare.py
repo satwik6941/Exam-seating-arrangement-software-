@@ -1,10 +1,21 @@
+import pandas as pd
 import random
+import tkinter as tk 
+from tkinter import ttk
+from fpdf import FPDF
+import os
 
-classes = 55
+classes = 35
 columns = 5
 benches = 7
 total_benches = columns * benches
 sections = ['CSE', 'AIE', 'AID', 'ECE', 'EEE', 'MEE', 'RAE']
+
+df = pd.read_csv("seatingarrangement_data.csv")
+
+first_year_students = []
+second_year_students = []
+third_year_students = []
 
 student_year_lists = {
     "CSE_year_1": [], "CSE_year_2": [], "CSE_year_3": [],
@@ -16,147 +27,80 @@ student_year_lists = {
     "RAE_year_1": [], "RAE_year_2": [], "RAE_year_3": []
 }
 
-while True:
-    print("Let's BEGIN")
-    print("1 - 1st year, 2 - 2nd year, 3 - 3rd year \n")
-    student_year_selection = input("Enter the year of the student: ")
-    
-    if student_year_selection.lower() == "exit":
-        break
-    
-    if student_year_selection == '1':
-        print("CSE, AIE, AID, ECE, EEE, MEE, RAE")
-        student_section_selection = input("Enter the section of the student: ").upper()
-        
-        if student_section_selection.lower() == "exit":
-            break
-        
-        if not student_section_selection.isalpha():
-            print("ERROR")
-            continue
-        
-        if student_section_selection not in sections:
-            print("Please enter one of the following: CSE, AIE, AID, ECE, EEE, MEE, RAE")
-            continue
-        
-        roll_numbers = input("Enter the number of students: ")
-        if roll_numbers.lower() == "exit":
-            break
-        
-        if not roll_numbers.isdigit():
-            print("ERROR")
-            continue
-        
-        if student_section_selection in sections:
-            for i in range(1, int(roll_numbers) + 1):
-                student_year_lists[f"{student_section_selection}_year_1"].append(f"{student_section_selection}Y1student{i}")
-            print_request = input("Do you want to print the list of students? (Y/N): ")
-            if print_request in ('Y', 'y'):
-                print(student_year_lists[f"{student_section_selection}_year_1"])
-            elif print_request in ('N', 'n'):
-                print("Thank you for using the program!")
-            elif print_request.lower() == "exit":
-                break
-            else:
-                print("ERROR")
-        else:
-            print("ERROR")
-    
-    elif student_year_selection == '2':
-        print("CSE, AIE, AID, ECE, EEE, MEE, RAE")
-        student_section_selection = input("Enter the section of the student: ").upper()
-        
-        if student_section_selection.lower() == "exit":
-            break
-        
-        if not student_section_selection.isalpha():
-            print("ERROR")
-            continue
-        
-        if student_section_selection not in sections:
-            print("Please enter one of the following: CSE, AIE, AID, ECE, EEE, MEE, RAE")
-            continue
-        
-        roll_numbers = input(f"Enter the number of students in {student_section_selection}: ")
-        if roll_numbers.lower() == "exit":
-            break
-        
-        if not roll_numbers.isdigit():
-            print("ERROR")
-            continue
-        
-        if student_section_selection in sections:
-            for i in range(1, int(roll_numbers) + 1):
-                student_year_lists[f"{student_section_selection}_year_2"].append(f"{student_section_selection}Y2student{i}")
-            
-            print_request = input("Do you want to print the list of students? (Y/N): ")
-            if print_request in ('Y', 'y'):
-                print(student_year_lists[f"{student_section_selection}_year_2"])
-            elif print_request in ('N', 'n'):
-                print("Thank you for using the program!")
-            elif print_request.lower() == "exit":
-                break
-            else:
-                print("ERROR")
-        else:
-            print("ERROR")
-    
-    elif student_year_selection == '3':
-        print("CSE, AIE, AID, ECE, EEE, MEE, RAE")
-        student_section_selection = input("Enter the section of the student: ").upper()
-        
-        if student_section_selection.lower() == "exit":
-            break
-        
-        if not student_section_selection.isalpha():
-            print("ERROR")
-            continue
-        
-        if student_section_selection not in sections:
-            print("Please enter one of the following: CSE, AIE, AID, ECE, EEE, MEE, RAE")
-            continue
-        
-        roll_numbers = input(f"Enter the number of students in {student_section_selection}: ")
-        if roll_numbers.lower() == "exit":
-            break
-        
-        if not roll_numbers.isdigit():
-            print("ERROR")
-            continue
-        
-        if student_section_selection in sections:
-            for i in range(1, int(roll_numbers) + 1):
-                student_year_lists[f"{student_section_selection}_year_3"].append(f"{student_section_selection}Y3student{i}")
-            
-            print_request = input("Do you want to print the list of students? (Y/N): ")
-            if print_request in ('Y', 'y'):
-                print(student_year_lists[f"{student_section_selection}_year_3"])
-            elif print_request in ('N', 'n'):
-                print("Thank you for using the program!")
-            elif print_request.lower() == "exit":
-                break
-            else:
-                print("ERROR")
-        else:
-            print("ERROR")
-    
+for reg_no in df["Registration No's"]:
+    if reg_no[11:13] == '24':
+        first_year_students.append(reg_no)
+    elif reg_no[11:13] == '23':
+        second_year_students.append(reg_no)
+    elif reg_no[11:13] == '22':
+        third_year_students.append(reg_no)
     else:
-        print("ERROR")
-courses = { 
-    "CSE_year_1": student_year_lists["CSE_year_1"], "CSE_year_2": student_year_lists["CSE_year_2"], "CSE_year_3": student_year_lists["CSE_year_3"],
-    "AIE_year_1": student_year_lists["AIE_year_1"], "AIE_year_2": student_year_lists["AIE_year_2"], "AIE_year_3": student_year_lists["AIE_year_3"],
-    "AID_year_1": student_year_lists["AID_year_1"], "AID_year_2": student_year_lists["AID_year_2"], "AID_year_3": student_year_lists["AID_year_3"],
-    "ECE_year_1": student_year_lists["ECE_year_1"], "ECE_year_2": student_year_lists["ECE_year_2"], "ECE_year_3": student_year_lists["ECE_year_3"],
-    "EEE_year_1": student_year_lists["EEE_year_1"], "EEE_year_2": student_year_lists["EEE_year_2"], "EEE_year_3": student_year_lists["EEE_year_3"],
-    "MEE_year_1": student_year_lists["MEE_year_1"], "MEE_year_2": student_year_lists["MEE_year_2"], "MEE_year_3": student_year_lists["MEE_year_3"],
-    "RAE_year_1": student_year_lists["RAE_year_1"], "RAE_year_2": student_year_lists["RAE_year_2"], "RAE_year_3": student_year_lists["RAE_year_3"]
-}
+        print("Error")
 
-def seating_arrangement(classes, columns, benches, courses):
+def student_classification(first_year_students, second_year_students, third_year_students, student_year_lists):
+    for student_roll_no1 in first_year_students:
+        if student_roll_no1[8:11] == 'CSE':
+            student_year_lists["CSE_year_1"].append(student_roll_no1)
+        elif student_roll_no1[8:11] == 'AIE':
+            student_year_lists["AIE_year_1"].append(student_roll_no1)
+        elif student_roll_no1[8:11] == 'AID':
+            student_year_lists["AID_year_1"].append(student_roll_no1)
+        elif student_roll_no1[8:11] == 'ECE':
+            student_year_lists["ECE_year_1"].append(student_roll_no1)
+        elif student_roll_no1[8:11] == 'EEE':
+            student_year_lists["EEE_year_1"].append(student_roll_no1)
+        elif student_roll_no1[8:11] == 'MEE':
+            student_year_lists["MEE_year_1"].append(student_roll_no1)
+        elif student_roll_no1[8:11] == 'RAE':
+            student_year_lists["RAE_year_1"].append(student_roll_no1)
+        else:
+            print("Error")
+
+    for student_roll_no2 in second_year_students:
+        if student_roll_no2[8:11] == 'CSE':
+            student_year_lists["CSE_year_2"].append(student_roll_no2)
+        elif student_roll_no2[8:11] == 'AIE':
+            student_year_lists["AIE_year_2"].append(student_roll_no2)
+        elif student_roll_no2[8:11] == 'AID':
+            student_year_lists["AID_year_2"].append(student_roll_no2)
+        elif student_roll_no2[8:11] == 'ECE':
+            student_year_lists["ECE_year_2"].append(student_roll_no2)
+        elif student_roll_no2[8:11] == 'EEE':
+            student_year_lists["EEE_year_2"].append(student_roll_no2)
+        elif student_roll_no2[8:11] == 'MEE':
+            student_year_lists["MEE_year_2"].append(student_roll_no2)
+        elif student_roll_no2[8:11] == 'RAE':
+            student_year_lists["RAE_year_2"].append(student_roll_no2)
+        else:
+            print("Error")
+
+    for student_roll_no3 in third_year_students:
+        if student_roll_no3[8:11] == 'CSE':
+            student_year_lists["CSE_year_3"].append(student_roll_no3)
+        elif student_roll_no3[8:11] == 'AIE':
+            student_year_lists["AIE_year_3"].append(student_roll_no3)
+        elif student_roll_no3[8:11] == 'AID':
+            student_year_lists["AID_year_3"].append(student_roll_no3)
+        elif student_roll_no3[8:11] == 'ECE':
+            student_year_lists["ECE_year_3"].append(student_roll_no3)
+        elif student_roll_no3[8:11] == 'EEE':
+            student_year_lists["EEE_year_3"].append(student_roll_no3)
+        elif student_roll_no3[8:11] == 'MEE':
+            student_year_lists["MEE_year_3"].append(student_roll_no3)
+        elif student_roll_no3[8:11] == 'RAE':
+            student_year_lists["RAE_year_3"].append(student_roll_no3)
+        else:
+            print("Error")
+
+    return student_year_lists
+
+students_data = student_classification(first_year_students, second_year_students, third_year_students, student_year_lists)
+
+def seating_arrangement(classes, columns, benches, students_data):
     print("\nArrangement time for exams")
     arrangement = [[[''] * benches for _ in range(columns)] for _ in range(classes)]
 
-    active_courses = {key: value for key, value in courses.items() if value and len(value) > 0}
+    active_courses = {key: value for key, value in students_data.items() if value and len(value) > 0}
     active_course_names = list(active_courses.keys())
 
     random.shuffle(active_course_names)
@@ -194,9 +138,6 @@ def seating_arrangement(classes, columns, benches, courses):
     bench_count = 0 
 
     for classroom in range(classes):
-        print(f"\nClassroom {classroom + 1} Seating Arrangement:")
-        print("=" * 100)
-
         current_column = 0
         current_bench = 0
 
@@ -206,7 +147,6 @@ def seating_arrangement(classes, columns, benches, courses):
             students_list2 = active_courses[students_list2_name]
 
             while current_column < columns:
-                print(f"Column {current_column + 1}: ", end="")
                 while current_bench < benches:
                     if bench_count % 2 == 0 and indices[students_list1_name] < len(students_list1):
                         arrangement[classroom][current_column][current_bench] = students_list1[indices[students_list1_name]]
@@ -218,12 +158,6 @@ def seating_arrangement(classes, columns, benches, courses):
                     current_bench += 1
                     bench_count += 1
 
-                seat_strings = [
-                    str(seat) if seat != '' else 'EMPTY'
-                    for seat in arrangement[classroom][current_column]
-                ]
-                print(" | ".join(seat_strings))
-
                 current_column += 1
                 current_bench = 0
 
@@ -234,13 +168,11 @@ def seating_arrangement(classes, columns, benches, courses):
                 current_pair += 1
 
             if current_column == columns:
-                current_column = 0
                 break
 
         if current_pair >= len(pairs) and last_class:
             students_list = active_courses[last_class]
             while current_column < columns:
-                print(f"Column {current_column + 1}: ", end="")
                 while current_bench < benches:
                     if indices[last_class] < len(students_list):
                         arrangement[classroom][current_column][current_bench] = students_list[indices[last_class]]
@@ -251,26 +183,117 @@ def seating_arrangement(classes, columns, benches, courses):
                     current_bench += 2
                     bench_count += 2  
 
-                seat_strings = [
-                    str(seat) if seat != '' else 'EMPTY'
-                    for seat in arrangement[classroom][current_column]
-                ]
-                print(" | ".join(seat_strings))
-
                 current_column += 1
                 current_bench = 0  
 
                 if indices[last_class] == len(students_list):
                     break
 
-        if current_pair >= len(pairs) and not last_class:
-            while current_column < columns:
-                print(f"Column {current_column + 1}: ", end="")
-                print("EMPTY | " * (benches - 1) + "EMPTY")
-                current_column += 1
-
-        print("-" * 100)
-
     return arrangement
 
-seating_arrangement(classes, columns, benches, courses)
+def save_as_pdf(arrangement, classes, columns, benches):
+    pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.set_font("Arial", size=10)
+
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    pdf.cell(200, 10, txt="Seating Arrangement", ln=True, align='C')
+    pdf.set_font("Arial", size=10)
+
+    for classroom_index in range(classes):
+        if classroom_index % 2 == 0 and classroom_index != 0:
+            pdf.add_page()
+
+        pdf.set_font("Arial", size=12)
+        pdf.cell(200, 10, txt=f"Classroom {classroom_index + 1}", ln=True, align='C')
+        pdf.set_font("Arial", size=10)
+
+        table_width = columns * 40
+        margin = (210 - table_width) / 2  # A4 width is 210mm
+
+        pdf.set_x(margin)
+        for col in range(columns):
+            pdf.cell(40, 12, txt=f"Column {col + 1}", border=1, align='C')
+        pdf.ln()
+
+        for row in range(benches):
+            pdf.set_x(margin)
+            for col in range(columns):
+                seat = arrangement[classroom_index][col][row]
+                pdf.cell(40, 12, txt=seat if seat else "EMPTY", border=1, align='C')
+            pdf.ln()
+        pdf.ln()
+
+    downloads_path = os.path.join(os.path.expanduser("~"), "Downloads", "seating_arrangement.pdf")
+    pdf.output(downloads_path)
+
+def seating_gui(arrangement):
+    root = tk.Tk()
+    root.title("Seating Arrangement")
+
+    root.state("zoomed")
+
+    canvas = tk.Canvas(root)
+    scrollbar = ttk.Scrollbar(root, orient="vertical", command=canvas.yview)
+    scrollable_frame = ttk.Frame(canvas)
+
+    scrollable_frame.bind(
+        "<Configure>",
+        lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+    )
+
+    canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+    canvas.configure(yscrollcommand=scrollbar.set)
+
+    save_button = ttk.Button(root, text="Save as PDF", command=lambda: save_as_pdf(arrangement, classes, columns, benches))
+    save_button.pack(side="top", anchor="ne", padx=10, pady=10)
+
+    classroom_font = ("Arial", 30, "bold") 
+    header_font = ("Arial", 20, "bold")   
+    seat_font = ("Arial", 18)         
+
+    classes = len(arrangement)
+    columns = len(arrangement[0])
+    benches = len(arrangement[0][0])
+
+    for i in range(classes):
+        frame = tk.Frame(scrollable_frame, pady=10)
+        frame.grid(row=i, column=0, padx=20, pady=20, sticky="nsew")
+        
+        title_label = tk.Label(frame, text=f"Classroom {i + 1}", font=classroom_font, anchor="center")
+        title_label.pack(pady=10)
+
+        seating_frame = tk.Frame(frame)
+        seating_frame.pack(fill="both", expand=True)
+
+        for col in range(columns):
+            col_label = tk.Label(seating_frame, text=f"Column {col + 1}", font=header_font)
+            col_label.grid(row=0, column=col, padx=10, pady=10, sticky="nsew")
+
+            for row in range(benches):
+                seat = arrangement[i][col][row]
+                seat_label = tk.Label(
+                    seating_frame,
+                    text=seat if seat else "EMPTY",
+                    font=seat_font,
+                    borderwidth=1,
+                    relief="solid"
+                )
+                seat_label.grid(row=row + 1, column=col, padx=10, pady=10, sticky="nsew")
+
+        for col in range(columns):
+            seating_frame.columnconfigure(col, weight=1)
+        for row in range(benches + 1): 
+            seating_frame.rowconfigure(row, weight=1)
+
+    scrollable_frame.columnconfigure(0, weight=1)
+
+    canvas.pack(side="left", fill="both", expand=True)
+    scrollbar.pack(side="right", fill="y")
+
+    root.mainloop()
+
+arrangement = seating_arrangement(classes, columns, benches, students_data)
+
+seating_gui(arrangement)
