@@ -18,7 +18,7 @@ student_year_lists = {
 
 print("Let's BEGIN")
 while True:
-    print("1 - 1st year, 2 - 2nd year, 3 - 3rd year, exit - exit the program \n")
+    print("1 - 1st year, 2 - 2nd year, 3 - 3rd year, exit - exit for the arrangement \n")
     student_year_selection = input("Enter the year of the student: ")
     
     if student_year_selection.lower() == "exit":
@@ -26,7 +26,7 @@ while True:
     
     if student_year_selection == '1':
         print("CSE, AIE, AID, ECE, EEE, MEE, RAE,")
-        print("exit - exit the program ")
+        print("exit - exit for the arrangement ")
         student_section_selection = input("Enter the section of the student: ").upper()
         
         if student_section_selection.lower() == "exit":
@@ -40,7 +40,7 @@ while True:
             print("Please enter one of the following: CSE, AIE, AID, ECE, EEE, MEE, RAE")
             continue
         
-        print("exit - exit the program ")
+        print("exit - exit for the arrangement ")
         roll_numbers = input("Enter the number of students: ")
         if roll_numbers.lower() == "exit":
             break
@@ -52,7 +52,7 @@ while True:
         if student_section_selection in sections:
             for i in range(1, int(roll_numbers) + 1):
                 student_year_lists[f"{student_section_selection}_year_1"].append(f"{student_section_selection}Y1student{i}")
-            print_request = input("Do you want to print the list of students? (Y/N), exit - exit the program : ")
+            print_request = input("Do you want to print the list of students? (Y/N), exit - exit for the arrangement : ")
             if print_request in ('Y', 'y'):
                 print(student_year_lists[f"{student_section_selection}_year_1"])
             elif print_request in ('N', 'n'):
@@ -66,7 +66,7 @@ while True:
     
     elif student_year_selection == '2':
         print("CSE, AIE, AID, ECE, EEE, MEE, RAE")
-        print("exit - exit the program ")
+        print("exit - exit for the arrangement ")
         student_section_selection = input("Enter the section of the student: ").upper()
         
         if student_section_selection.lower() == "exit":
@@ -80,7 +80,7 @@ while True:
             print("Please enter one of the following: CSE, AIE, AID, ECE, EEE, MEE, RAE")
             continue
         
-        print("exit - exit the program ")
+        print("exit - exit for the arrangement ")
         roll_numbers = input(f"Enter the number of students in {student_section_selection}: ")
         if roll_numbers.lower() == "exit":
             break
@@ -92,7 +92,7 @@ while True:
         if student_section_selection in sections:
             for i in range(1, int(roll_numbers) + 1):
                 student_year_lists[f"{student_section_selection}_year_2"].append(f"{student_section_selection}Y2student{i}")
-            print_request = input("Do you want to print the list of students? (Y/N),  exit - exit the program : ")
+            print_request = input("Do you want to print the list of students? (Y/N),  exit - exit for the arrangement : ")
             if print_request in ('Y', 'y'):
                 print(student_year_lists[f"{student_section_selection}_year_2"])
             elif print_request in ('N', 'n'):
@@ -106,7 +106,7 @@ while True:
     
     elif student_year_selection == '3':
         print("CSE, AIE, AID, ECE, EEE, MEE, RAE")
-        print("exit - exit the program ")
+        print("exit - exit for the arrangement ")
         student_section_selection = input("Enter the section of the student: ").upper()
         
         if student_section_selection.lower() == "exit":
@@ -120,7 +120,7 @@ while True:
             print("Please enter one of the following: CSE, AIE, AID, ECE, EEE, MEE, RAE")
             continue
         
-        print(" exit - exit the program ")
+        print(" exit - exit for the arrangement ")
         roll_numbers = input(f"Enter the number of students in {student_section_selection}: ")
         if roll_numbers.lower() == "exit":
             break
@@ -132,7 +132,7 @@ while True:
         if student_section_selection in sections:
             for i in range(1, int(roll_numbers) + 1):
                 student_year_lists[f"{student_section_selection}_year_3"].append(f"{student_section_selection}Y3student{i}")
-            print_request = input("Do you want to print the list of students? (Y/N),  exit - exit the program : ")
+            print_request = input("Do you want to print the list of students? (Y/N),  exit - exit for the arrangement : ")
             if print_request in ('Y', 'y'):
                 print(student_year_lists[f"{student_section_selection}_year_3"])
             elif print_request in ('N', 'n'):
