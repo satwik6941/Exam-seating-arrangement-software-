@@ -30,3 +30,8 @@ The **seating_pandas** branch automates the seating arrangement process for exam
 2. **Run the Code**: Execute the Python script to generate the seating arrangement.
 3. **Library Requirements**: Pandas, FPDF (A PDF generation library), tkinter (A GUI generation library).
 
+---
+
+**NOTE**:
+
+A **sample** CSV file in the repository contains the students' roll numbers for the Python script to function. Any CSV file can be uploaded in the code with that particular pattern of roll numbers
