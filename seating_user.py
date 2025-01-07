@@ -1,4 +1,6 @@
 import random
+import tkinter as tk 
+from tkinter import ttk
 
 classes = 55
 columns = 5
@@ -156,6 +158,8 @@ courses = {
     "RAE_year_1": student_year_lists["RAE_year_1"], "RAE_year_2": student_year_lists["RAE_year_2"], "RAE_year_3": student_year_lists["RAE_year_3"]
 }
 
+import random
+
 def seating_arrangement(classes, columns, benches, courses):
     print("\nArrangement time for exams")
     arrangement = [[[''] * benches for _ in range(columns)] for _ in range(classes)]
@@ -195,7 +199,7 @@ def seating_arrangement(classes, columns, benches, courses):
     indices = {key: 0 for key in active_course_names}
 
     current_pair = 0
-    bench_count = 0 
+    bench_count = 0
 
     for classroom in range(classes):
         print(f"\nClassroom {classroom + 1} Seating Arrangement:")
@@ -238,7 +242,6 @@ def seating_arrangement(classes, columns, benches, courses):
                 current_pair += 1
 
             if current_column == columns:
-                current_column = 0
                 break
 
         if current_pair >= len(pairs) and last_class:
@@ -253,7 +256,7 @@ def seating_arrangement(classes, columns, benches, courses):
                         arrangement[classroom][current_column][current_bench] = 'EMPTY'
 
                     current_bench += 2
-                    bench_count += 2  
+                    bench_count += 2
 
                 seat_strings = [
                     str(seat) if seat != '' else 'EMPTY'
@@ -262,7 +265,7 @@ def seating_arrangement(classes, columns, benches, courses):
                 print(" | ".join(seat_strings))
 
                 current_column += 1
-                current_bench = 0  
+                current_bench = 0
 
                 if indices[last_class] == len(students_list):
                     break
@@ -277,4 +280,69 @@ def seating_arrangement(classes, columns, benches, courses):
 
     return arrangement
 
-seating_arrangement(classes, columns, benches, courses)
+arrangement = seating_arrangement(classes, columns, benches, courses)
+
+def seating_gui(arrangement):
+    root = tk.Tk()
+    root.title("Seating Arrangement")
+
+    root.state("zoomed")
+
+    canvas = tk.Canvas(root)
+    scrollbar = ttk.Scrollbar(root, orient="vertical", command=canvas.yview)
+    scrollable_frame = ttk.Frame(canvas)
+
+    scrollable_frame.bind(
+        "<Configure>",
+        lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+    )
+
+    canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+    canvas.configure(yscrollcommand=scrollbar.set)
+
+    classroom_font = ("Arial", 30, "bold") 
+    header_font = ("Arial", 20, "bold")   
+    seat_font = ("Arial", 18)         
+
+    classes = len(arrangement)
+    columns = len(arrangement[0])
+    benches = len(arrangement[0][0])
+
+    for i in range(classes):
+        frame = tk.Frame(scrollable_frame, pady=10)
+        frame.grid(row=i, column=0, padx=20, pady=20, sticky="nsew")
+        
+        title_label = tk.Label(frame, text=f"Classroom {i + 1}", font=classroom_font, anchor="center")
+        title_label.pack(pady=10)
+
+        seating_frame = tk.Frame(frame)
+        seating_frame.pack(fill="both", expand=True)
+
+        for col in range(columns):
+            col_label = tk.Label(seating_frame, text=f"Column {col + 1}", font=header_font)
+            col_label.grid(row=0, column=col, padx=10, pady=10, sticky="nsew")
+
+            for row in range(benches):
+                seat = arrangement[i][col][row]
+                seat_label = tk.Label(
+                    seating_frame,
+                    text=seat if seat else "EMPTY",
+                    font=seat_font,
+                    borderwidth=1,
+                    relief="solid"
+                )
+                seat_label.grid(row=row + 1, column=col, padx=10, pady=10, sticky="nsew")
+
+        for col in range(columns):
+            seating_frame.columnconfigure(col, weight=1)
+        for row in range(benches + 1): 
+            seating_frame.rowconfigure(row, weight=1)
+
+    scrollable_frame.columnconfigure(0, weight=1)
+
+    canvas.pack(side="left", fill="both", expand=True)
+    scrollbar.pack(side="right", fill="y")
+
+    root.mainloop()
+
+seating_gui(arrangement)
