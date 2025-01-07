@@ -15,7 +15,7 @@ This branch is a specialized seating arrangement generator for the college Amrit
 
 The **seating_pandas** branch automates the seating arrangement process for exams at Amrita Vishwa Vidyapeetham, Bangalore. By uploading a CSV file, the code generates the seating arrangement efficiently and accurately. This project supports the arrangement of seating for the seven B-Tech courses mentioned in the main branch:
 - 💻 CSE (Computer Science Engineering)
--🤖 AIE (Artificial Intelligence Engineering)
+- 🤖 AIE (Artificial Intelligence Engineering)
 - 📊 AID (Artificial Intelligence and Data Science)
 - 📡 ECE (Electrical and Communication Engineering)
 - ⚡ EEE (Electrical and Electronics Engineering)
@@ -34,4 +34,4 @@ The **seating_pandas** branch automates the seating arrangement process for exam
 
 **NOTE**:
 
-A **sample** CSV file in the repository contains the students' roll numbers for the Python script to function. Any CSV file can be uploaded in the code with that particular pattern of roll numbers
+A **sample** CSV file in the repository contains the students' roll numbers for the Python script to function. Any CSV file can be uploaded in the code with that particular pattern of roll numbers in the sample CSV file
