@@ -40,11 +40,11 @@ This project can prepare seating for seven B.Tech courses:
 - 🛠️ MEE (Mechanical Engineering)
 - 🤖 RAE (Robotics and Artificial Intelligence Engineering)
 
-- This arranges the seating in an alternative pattern
+This arranges the seating in an alternative pattern
 Here is a sample,
 Classroom 1 Seating Arrangement:
 
-====================================================================================================
+===============================================================================
 
 Column 1: AIEY2student1 | AIDY3student1 | AIEY2student2 | AIDY3student2 | AIEY2student3 | AIDY3student3 | AIEY2student4
 
