@@ -27,6 +27,7 @@ student_year_lists = {
     "RAE_year_1": [], "RAE_year_2": [], "RAE_year_3": []
 }
 
+#This input is used to get the current year from the user to determine the first, second and third year students
 current_year = input("Enter the current year: ")
 
 for reg_no in df["Registration No's"]:
