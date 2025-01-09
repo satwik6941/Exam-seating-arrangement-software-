@@ -27,12 +27,14 @@ student_year_lists = {
     "RAE_year_1": [], "RAE_year_2": [], "RAE_year_3": []
 }
 
+current_year = input("Enter the current year: ")
+
 for reg_no in df["Registration No's"]:
-    if reg_no[11:13] == '24':
+    if reg_no[11:13] == current_year:
         first_year_students.append(reg_no)
-    elif reg_no[11:13] == '23':
+    elif reg_no[11:13] == str(int(current_year) - 1):
         second_year_students.append(reg_no)
-    elif reg_no[11:13] == '22':
+    elif reg_no[11:13] == str(int(current_year) - 2):
         third_year_students.append(reg_no)
     else:
         print("Error")
