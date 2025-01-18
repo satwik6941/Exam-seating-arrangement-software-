@@ -7,17 +7,10 @@ This is a python project which generates a exam seating arrangement for B-Tech c
 ---
 
 ## 📋 Contents
-- 🌲 **Branches**
 - 📝 **Introduction**
 - 🗂 **Table of Contents**
 - 💡 **Concepts Used**
 - 📚 **Description**
-
----
-
-## 🌲 Branches 
-- **main**: This branch generates the seating arrangement fully based on user input. The input is taken in the terminal, and the output is shown in both the terminal and GUI. 
-- **seating_pandas**: This branch generates a specialized seating arrangement for the college Amrita Vishwa Vidyapeetham, Bengaluru. It requires uploading a CSV file of the roll numbers of the college, and it generates the arrangement accordingly.
 
 ---
 
@@ -56,7 +49,7 @@ Column 4: AIDY3student11 | AIEY2student12 | AIDY3student12 | AIEY2student13 | AI
 
 Column 5: AIEY2student15 | AIDY3student15 | AIEY2student16 | AIDY3student16 | AIEY2student17 | AIDY3student17 | AIEY2student18
 
-----------------------------------------------------------------------------------------------------
+================================================================================
 
 ---
 
